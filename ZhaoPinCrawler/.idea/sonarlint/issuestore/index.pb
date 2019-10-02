@@ -1,9 +1,19 @@
 
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-J
-src/main/java/Crawler.java,9\a\9a6f0f6cf0d39a7d4587afc6d3a193ab54c1e069
-W
-'src/main/java/RecruitmentProcessor.java,c\8\c8e0c3c360f646554606b85b34d9f35d63eeb298
+R
+"src/main/java/request/Request.java,8\6\8680d1575bb7a1346019ed89ae7299da7af57a96
+X
+(src/main/java/request/DetailRequest.java,e\9\e9bd9751690d99ea609a2636d39f684d43a90149
 P
  src/main/java/MongoPipeline.java,3\7\3766c4b37c2eaa878c0ea094e6638428deb44b41
+J
+src/main/java/Crawler.java,9\a\9a6f0f6cf0d39a7d4587afc6d3a193ab54c1e069
+I
+src/test/java/Tester.java,0\4\043b84152f554ef206edb5fc4fcd7fadf505518f
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
+U
+%src/main/java/request/SouRequest.java,7\b\7b8fe057cc7af232c17a6f22797f54d2038b1005
+V
+&src/main/java/request/ListRequest.java,9\b\9b101dc5bfefc0250d6070190cc5eaea8ba72d29
+W
+'src/main/java/RecruitmentProcessor.java,c\8\c8e0c3c360f646554606b85b34d9f35d63eeb298

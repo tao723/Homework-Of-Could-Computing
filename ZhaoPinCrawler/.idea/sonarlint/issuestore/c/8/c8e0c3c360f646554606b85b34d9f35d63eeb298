@@ -1,0 +1,11 @@
+
+Jsquid:S1172¹"+Remove this unused method parameter "page".(¼ôù–8¨‰æ¶Ø-
+[
+squid:S1065"9Replace this use of System.out or System.err by a logger.(”ÿ¿®ÿÿÿÿÿ8“¹ÿ¶Ø-
+usquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 42 to the 15 allowed.(Ÿóç€þÿÿÿÿ8†šÝµØ-
+[
+squid:S1061"9Replace this use of System.out or System.err by a logger.(ò‹ï¬ùÿÿÿÿ8ýÇö¶Ø-
+nsquid:CommentedOutCodeLined"<This block of commented-out lines of code should be removed.(‚Œáþüÿÿÿÿ8Š„¶Ø-
+Jsquid:S1068"-Remove this unused "souBackup" private field.(°ÓÞ8†šÝµØ-
+ squid:S1186¹"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¼ôù–8¨‰æ¶Ø-
+Rsquid:EmptyStatementUsageCheck"Remove this empty statement.(÷ŒÊ²ýÿÿÿÿ8†šÝµØ-

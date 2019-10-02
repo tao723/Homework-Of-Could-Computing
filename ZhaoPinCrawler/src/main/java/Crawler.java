@@ -1,3 +1,4 @@
+import request.ListRequest;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 
@@ -7,9 +8,10 @@ public class Crawler {
         System.out.println("开始爬取：");
         Spider spider=Spider.create(new RecruitmentProcessor());
         for(String job:jobs){
-            spider.addUrl("https://xiaoyuan.zhaopin.com/search/jn=2&js=-1&kw="+job+"&pg=1&order=1");
+            spider.addUrl(new ListRequest(job).get());
         }
         spider.addPipeline(new ConsolePipeline());
+        spider.addPipeline(new MongoPipeline());
         spider.thread(5).run();
     }
 }

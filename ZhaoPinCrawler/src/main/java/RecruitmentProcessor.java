@@ -1,4 +1,7 @@
 import com.alibaba.fastjson.JSONObject;
+import request.DetailRequest;
+import request.ListRequest;
+import request.SouRequest;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.processor.PageProcessor;
@@ -6,14 +9,16 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 public class RecruitmentProcessor implements PageProcessor {
 
+    private String souBackup = "https://xiaoyuan.zhaopin.com/api/sou?sourceClient=sou&keyWord=%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86&jobSource=&pageNumber=1&jobNatures=2&jobTypeId=&cityIdList=&cityId=&industryId=&companyTypeId=&dateSearchTypeId=&orderBy=&clientIp=10.172.27.221&_v=0.26932904&x-zp-page-request-id=713f04ef3484427fa820b7ddeb5bab0f-1569682437617-181697&x-zp-client-id=9166d50b-75bc-4618-8c76-2e74bd39b5a1";
     private Site site = Site.me().setRetryTimes(3).setSleepTime(30);
-    private static final String DETAIL="https://xiaoyuan.zhaopin.com/job/[A-Z]*[0-9]*";
-    private static final String LIST="https://xiaoyuan.zhaopin.com/search/jn=2&js=-1&kw=\\S+&pg=[0-9]*&order=1";
-    private static final String SOU="https://xiaoyuan.zhaopin.com/api/sou?\\S+";
+    //单次请求获取的最大的招聘数量
+    private static final int TOTAL_MAX=1020;
+    private enum QUERY{CITY,JT,OTHER,IND,COR,JS};
 
     public void process(Page page) {
         //招聘信息详细页面
-        if(page.getUrl().regex(DETAIL).match()){
+        if(page.getUrl().regex(DetailRequest.FORMAT).match()){
+            String jobPositionNumber = new DetailRequest().parse(page.getUrl().get()).getJobPositionNumber();
             String time = page.getHtml().xpath("//span[@class='time']/text()").get();
             String jobName = page.getHtml().xpath("//span[@class='name']/span//text()").get();
             String city = page.getHtml().xpath("//p[@class='muilt-infos']/span[1]/span/text()").get();
@@ -25,6 +30,7 @@ public class RecruitmentProcessor implements PageProcessor {
             String companyScale = page.getHtml().xpath("//div[@class='intro']/p[3]/span[2]/text()").get();
             String companyType = page.getHtml().xpath("//div[@class='intro']/p[4]/span[2]/text()").get();
             String description = page.getHtml().xpath("//div[@class='describe']//text()").get();
+            page.putField("_id",jobPositionNumber);
             page.putField("time",time);
             page.putField("jobName",jobName);
             page.putField("jobType",jobType);
@@ -38,19 +44,164 @@ public class RecruitmentProcessor implements PageProcessor {
             page.putField("description",description);
         }
         //招聘信息列表页面
-        else if(page.getUrl().regex(LIST).match()){
-            page.addTargetRequest("https://xiaoyuan.zhaopin.com/api/sou?sourceClient=sou&keyWord=%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86&jobSource=&pageNumber=1&jobNatures=2&jobTypeId=&cityIdList=&cityId=&industryId=&companyTypeId=&dateSearchTypeId=&orderBy=&clientIp=10.172.27.221&_v=0.26932904&x-zp-page-request-id=713f04ef3484427fa820b7ddeb5bab0f-1569682437617-181697&x-zp-client-id=9166d50b-75bc-4618-8c76-2e74bd39b5a1");
+        else if(page.getUrl().regex(ListRequest.FORMAT).match()){
+            int total = Integer.parseInt(page.getHtml().xpath("//span[@class='total']/text()").get().trim());
+            System.out.println("total:"+total);
+            ListRequest currentRequest = new ListRequest().parse(page.getUrl().get());
+            //单次请求获取的数量过多无法爬取
+            if(total>TOTAL_MAX){
+                System.out.println("over:"+total);
+                String firstTitle = page.getHtml().xpath("//span[@class='query-title fn-left'][1]/text()").get();
+                SouRequest request=new SouRequest();
+                boolean isPartition = true;
+                switch (getQuery(firstTitle)){
+                    case CITY:
+                        request.setKw(currentRequest.getKw());
+                        request.setSt(SouRequest.CITY);
+                        break;
+                    case JT:
+                        request.setKw(currentRequest.getKw());
+                        request.setCity(currentRequest.getCity());
+                        request.setSt(SouRequest.JT);
+                        break;
+                    case IND:
+                        request.setKw(currentRequest.getKw());
+                        request.setCity(currentRequest.getCity());
+                        request.setJs(currentRequest.getJs());
+                        request.setSt(SouRequest.IND);
+                        break;
+                    case COR:
+                        request.setKw(currentRequest.getKw());
+                        request.setCity(currentRequest.getCity());
+                        request.setJs(currentRequest.getJs());
+                        request.setInd(currentRequest.getInd());
+                        request.setSt(SouRequest.COR);
+                        break;
+                    case JS:
+                        request.setKw(currentRequest.getKw());
+                        request.setCity(currentRequest.getCity());
+                        request.setJs(currentRequest.getJs());
+                        request.setInd(currentRequest.getInd());
+                        request.setCor(currentRequest.getCor());
+                        request.setSt(SouRequest.JS);
+                        break;
+                    case OTHER:
+                        crawList(page);
+                        isPartition=false;
+                        break;
+                    default:
+                        isPartition=false;
+                        break;
+                }
+                if (isPartition) page.addTargetRequest(request.get());
+            }
+            //单次请求的数量可以爬取
+            else crawList(page);
+            //page.addTargetRequest(new SouRequest(job).get());
         }
         //搜索请求获得的json
-        else if(page.getUrl().regex(SOU).match()){
-            for(String item:page.getJson().jsonPath("$.data.Items").all()){
-                JSONObject jsonObject = JSONObject.parseObject(item);
-                page.addTargetRequest("https://xiaoyuan.zhaopin.com/job/"+(String) jsonObject.get("JobPositionNumber"));
+        else if(page.getUrl().regex(SouRequest.FORMAT).match()){
+            SouRequest currentRequest = new SouRequest().parse(page.getUrl().get());
+            int st = currentRequest.getSt();
+            if(st==SouRequest.NORMAL){
+                for(String item:page.getJson().jsonPath("$.data.Items").all()){
+                    JSONObject jsonObject = JSONObject.parseObject(item);
+                    String jobPositionNumber = (String) jsonObject.get("JobPositionNumber");
+                    String traceUrl = (String) jsonObject.get("Traceurl");
+                    page.addTargetRequest(new DetailRequest(jobPositionNumber,traceUrl).get());
+                }
+                return;
+            }
+            ListRequest request=new ListRequest();
+            if(st==SouRequest.CITY){
+                for(String item:page.getJson().jsonPath("$.data.FacetsItems.SOU_WORK_CITY").all()){
+                    JSONObject jsonObject = JSONObject.parseObject(item);
+                    String cityCode = (String) jsonObject.get("code");
+                    int city = Integer.parseInt(cityCode);
+                    if(city==489)return;//城市范围为全国
+                    request.setKw(currentRequest.getKw());
+                    request.setCity(city);
+                    page.addTargetRequest(request.get());
+                }
+            }
+            else if(st==SouRequest.JT){
+                for(String item:page.getJson().jsonPath("$.data.FacetsItems.SOU_POSITION_SMALLTYPE").all()){
+                    JSONObject jsonObject = JSONObject.parseObject(item);
+                    String jtCode = (String) jsonObject.get("code");
+                    int jt = Integer.parseInt(jtCode);
+                    request.setKw(currentRequest.getKw());
+                    request.setCity(currentRequest.getCity());
+                    request.setJt(jt);
+                    page.addTargetRequest(request.get());
+                }
+            }
+            else if(st==SouRequest.IND){
+                for(String item:page.getJson().jsonPath("$.data.FacetsItems.SOU_INDUSTRY").all()){
+                    JSONObject jsonObject = JSONObject.parseObject(item);
+                    String indCode = (String) jsonObject.get("code");
+                    int ind = Integer.parseInt(indCode);
+                    request.setKw(currentRequest.getKw());
+                    request.setCity(currentRequest.getCity());
+                    request.setJt(currentRequest.getJt());
+                    request.setInd(ind);
+                    page.addTargetRequest(request.get());
+                }
+            }
+            else if(st==SouRequest.COR){
+                for(String item:page.getJson().jsonPath("$.data.FacetsItems.SOU_COMPANY_TYPE").all()){
+                    JSONObject jsonObject = JSONObject.parseObject(item);
+                    String corCode = (String) jsonObject.get("code");
+                    int cor = Integer.parseInt(corCode);
+                    request.setKw(currentRequest.getKw());
+                    request.setCity(currentRequest.getCity());
+                    request.setJt(currentRequest.getJt());
+                    request.setInd(currentRequest.getInd());
+                    request.setCor(cor);
+                    page.addTargetRequest(request.get());
+                }
+            }
+            else if (st==SouRequest.JS){
+                for(String item:page.getJson().jsonPath("$.data.FacetsItems.SOU_COMPANY_TYPE").all()){
+                    JSONObject jsonObject = JSONObject.parseObject(item);
+                    String jsCode = (String) jsonObject.get("code");
+                    int js = Integer.parseInt(jsCode);
+                    request.setKw(currentRequest.getKw());
+                    request.setCity(currentRequest.getCity());
+                    request.setJt(currentRequest.getJt());
+                    request.setInd(currentRequest.getInd());
+                    request.setCor(currentRequest.getCor());
+                    request.setJs(js);
+                    page.addTargetRequest(request.get());
+                }
             }
         }
     }
 
+
     public Site getSite() {
         return site;
+    }
+
+    private void crawList(Page page){
+
+    }
+
+    private QUERY getQuery(String title){
+        if(title.compareTo("工作地点:")==0){
+            return QUERY.CITY;
+        }
+        if(title.compareTo("职位类型:")==0){
+            return QUERY.JT;
+        }
+        if(title.compareTo("行业类型:")==0){
+            return QUERY.IND;
+        }
+        if (title.compareTo("公司性质:")==0){
+            return QUERY.COR;
+        }
+        if(title.compareTo("职位来源:")==0){
+            return QUERY.JS;
+        }
+        return QUERY.OTHER;
     }
 }

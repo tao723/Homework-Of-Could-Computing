@@ -1,2 +1,6 @@
 
-¤squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(´§•ˆıÿÿÿÿ8—·‘Ş×-
+=squid:S1170"!Make this final field static too.(Ûè…Â8Ã ³Ø-
+nsquid:S00116"QRename this field "ALIYUN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ûè…Â8Ã ³Ø-
+rsquid:S00116"PRename this field "LOCAL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆÄ»¯øÿÿÿÿ8Ã ³Ø-
+Bsquid:S1170"!Make this final field static too.(ˆÄ»¯øÿÿÿÿ8Ã ³Ø-
+Fsquid:S1068"*Remove this unused "ALIYUN" private field.(Ûè…Â8Ã ³Ø-
