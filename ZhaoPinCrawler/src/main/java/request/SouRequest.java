@@ -72,7 +72,7 @@ public class SouRequest implements Request {
     public String get() {
         return "https://xiaoyuan.zhaopin.com/api/sou?sourceClient=sou" +
                 "&keyWord=" + kw+
-                "&jobSource=" + (js==-1?"-1":js) +
+                "&jobSource=" + (js==-1?"":js) +
                 "&pageNumber=" + (pg==-1?"1":pg)+
                 "&jobNatures=" + (jn==-1?"2":jn)+
                 "&jobTypeId=" + (jt==-1?"":jt)+
@@ -81,6 +81,18 @@ public class SouRequest implements Request {
                 "&companyTypeId=" + (cor==-1?"":cor)+
                 "&orderBy=" + (order==-1?"1":order)+
                 "&ss=" + st;
+    }
+
+    public static SouRequest getFromListRequest(ListRequest listRequest){
+        SouRequest souRequest=new SouRequest();
+        souRequest.setKw(listRequest.getKw());
+        souRequest.setJt(listRequest.getJt());
+        souRequest.setCity(listRequest.getCity());
+        souRequest.setCor(listRequest.getCor());
+        souRequest.setInd(listRequest.getInd());
+        souRequest.setPg(listRequest.getPg());
+        souRequest.setOrder(listRequest.getOrder());
+        return souRequest;
     }
 
     public SouRequest parse(String str) {
@@ -101,7 +113,7 @@ public class SouRequest implements Request {
 
     private int parseItem(String item){
         String[] ss=item.split("=");
-        if(ss.length==1)return 0;
+        if(ss.length==1)return -1;
         else return Integer.parseInt(ss[1]);
     }
 

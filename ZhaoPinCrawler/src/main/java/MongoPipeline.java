@@ -14,7 +14,7 @@ public class MongoPipeline implements Pipeline {
     private final String ALIYUN = "47.100.88.174";
     private final String LOCAL = "localhost";
 
-    MongoClient mongoClient = new MongoClient(LOCAL,27017);
+    MongoClient mongoClient = new MongoClient(ALIYUN,27017);
     MongoDatabase mongoDatabase = mongoClient.getDatabase("zhilian");
     MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("base");
 

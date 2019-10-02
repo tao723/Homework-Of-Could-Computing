@@ -81,7 +81,7 @@ public class ListRequest implements Request{
 
     private int parseItem(String item){
         String[] ss=item.split("=");
-        if(ss.length==1)return 0;
+        if(ss.length==1)return -1;
         else return Integer.parseInt(ss[1]);
     }
 
