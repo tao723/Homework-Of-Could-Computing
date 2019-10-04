@@ -3,6 +3,7 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.scheduler.BloomFilterDuplicateRemover;
 import us.codecraft.webmagic.scheduler.QueueScheduler;
+import us.codecraft.webmagic.scheduler.component.HashSetDuplicateRemover;
 
 public class Crawler {
 
@@ -57,7 +58,7 @@ public class Crawler {
         }
         spider.addPipeline(new ConsolePipeline());
         spider.addPipeline(new MongoPipeline());
-        spider.setScheduler(new QueueScheduler().setDuplicateRemover(new BloomFilterDuplicateRemover(500000)));
+        spider.setScheduler(new QueueScheduler().setDuplicateRemover(new HashSetDuplicateRemover()));
         spider.thread(8).run();
     }
 }

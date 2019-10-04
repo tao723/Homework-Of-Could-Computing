@@ -17,3 +17,5 @@ V
 &src/main/java/request/ListRequest.java,9\b\9b101dc5bfefc0250d6070190cc5eaea8ba72d29
 W
 'src/main/java/RecruitmentProcessor.java,c\8\c8e0c3c360f646554606b85b34d9f35d63eeb298
+R
+"src/main/java/META-INF/MANIFEST.MF,6\3\63ef5783cbf71fdf39c1fd6ae6873fd812259930
