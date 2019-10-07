@@ -20,7 +20,9 @@ public class RecruitmentProcessor implements PageProcessor {
     public void process(Page page) {
         //招聘信息详细页面
         if(page.getUrl().regex(DetailRequest.FORMAT).match()){
-            String jobPositionNumber = new DetailRequest().parse(page.getUrl().get()).getJobPositionNumber();
+            DetailRequest currentRequest = new DetailRequest().parse(page.getUrl().get());
+            String jobPositionNumber = currentRequest.getJobPositionNumber();
+            String keyWord = currentRequest.getKw();
             String time = page.getHtml().xpath("//span[@class='time']/text()").get();
             String jobName = page.getHtml().xpath("//span[@class='name']/span//text()").get();
             String city = page.getHtml().xpath("//p[@class='muilt-infos']/span[1]/span/text()").get();
@@ -33,6 +35,7 @@ public class RecruitmentProcessor implements PageProcessor {
             String companyType = page.getHtml().xpath("//div[@class='intro']/p[4]/span[2]/text()").get();
             String description = page.getHtml().xpath("//div[@class='describe']//text()").get();
             page.putField("_id",jobPositionNumber);
+            page.putField("keyWord",keyWord);
             page.putField("time",time);
             page.putField("jobName",jobName);
             page.putField("jobType",jobType.trim());
@@ -109,7 +112,7 @@ public class RecruitmentProcessor implements PageProcessor {
                     JSONObject jsonObject = JSONObject.parseObject(item);
                     String jobPositionNumber = (String) jsonObject.get("JobPositionNumber");
                     String traceUrl = (String) jsonObject.get("Traceurl");
-                    page.addTargetRequest(new DetailRequest(jobPositionNumber,traceUrl).get());
+                    page.addTargetRequest(new DetailRequest(jobPositionNumber,traceUrl,currentRequest.getKw()).get());
                 }
             }
             ListRequest request=new ListRequest();

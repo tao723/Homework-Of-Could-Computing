@@ -2,9 +2,19 @@ import org.junit.Test;
 import request.ListRequest;
 import request.SouRequest;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import static junit.framework.TestCase.assertEquals;
 
 public class Tester {
+
+    @Test
+    public void codeTest() throws UnsupportedEncodingException {
+        String urlCode = "%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1";
+        String utf8Code = "交互设计";
+        assertEquals(URLDecoder.decode(urlCode,"UTF-8"),utf8Code);
+    }
 
     @Test
     public void SouRequestTest1(){

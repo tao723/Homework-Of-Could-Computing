@@ -1,5 +1,5 @@
 
-Hsquid:S1444",Make this "public static FORMAT" field final(¦Ó²8ÜÅè¶Ø-
-msquid:S3008"QRename this field "FORMAT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦Ó²8ÜÅè¶Ø-
-…"squid:ClassVariableVisibilityCheck"RMake FORMAT a static final constant or non-public and provide accessors if needed.(¦Ó²8ÜÅè¶Ø-
-csquid:S00107"AConstructor has 9 parameters, which is greater than 7 authorized.(èâ“úÿÿÿÿ8ÜÅè¶Ø-
+esquid:S00107"AConstructor has 9 parameters, which is greater than 7 authorized.(èâ“úÿÿÿÿ8ÜÅè¶Ø-
+Jsquid:S1444",Make this "public static FORMAT" field final(¦Ó²8ÜÅè¶Ø-
+osquid:S3008"QRename this field "FORMAT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦Ó²8ÜÅè¶Ø-
+‡"squid:ClassVariableVisibilityCheck"RMake FORMAT a static final constant or non-public and provide accessors if needed.(¦Ó²8ÜÅè¶Ø-

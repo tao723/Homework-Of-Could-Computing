@@ -1,6 +1,6 @@
 
-=squid:S1170"!Make this final field static too.(Ϋθ…Β8Γ ³Ψ-
-rsquid:S00116"PRename this field "LOCAL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Δ»―ψÿÿÿÿ8Γ ³Ψ-
-nsquid:S00116"QRename this field "ALIYUN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ϋθ…Β8Γ ³Ψ-
-Bsquid:S1170"!Make this final field static too.(Δ»―ψÿÿÿÿ8Γ ³Ψ-
-Jsquid:S1068")Remove this unused "LOCAL" private field.(Δ»―ψÿÿÿÿ8θώ§Ω-
+Lsquid:S1068")Remove this unused "LOCAL" private field.(Δ»―ψÿÿÿÿ8θώ§Ω-
+psquid:S00116"QRename this field "ALIYUN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ϋθ…Β8Γ ³Ψ-
+Dsquid:S1170"!Make this final field static too.(Δ»―ψÿÿÿÿ8Γ ³Ψ-
+tsquid:S00116"PRename this field "LOCAL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Δ»―ψÿÿÿÿ8Γ ³Ψ-
+?squid:S1170"!Make this final field static too.(Ϋθ…Β8Γ ³Ψ-

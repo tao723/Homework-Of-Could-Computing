@@ -5,9 +5,11 @@ public class DetailRequest implements Request{
     public static final String FORMAT="https://xiaoyuan.zhaopin.com/job/[A-Z0-9]*\\?\\S+";
     private String jobPositionNumber;
     private String traceUrl;
-    public DetailRequest(String jobPositionNumber,String traceUrl) {
+    private String kw;
+    public DetailRequest(String jobPositionNumber,String traceUrl,String kw) {
         this.jobPositionNumber = jobPositionNumber;
         this.traceUrl=traceUrl;
+        this.kw=kw;
     }
 
     public DetailRequest() {
@@ -15,14 +17,15 @@ public class DetailRequest implements Request{
     }
 
     public String get() {
-        return "https://xiaoyuan.zhaopin.com/job/"+jobPositionNumber+"?"+traceUrl;
+        return "https://xiaoyuan.zhaopin.com/job/"+jobPositionNumber+"?"+traceUrl+"?"+kw;
     }
 
     public DetailRequest parse(String str) {
         if(!str.matches(FORMAT))return new DetailRequest();
-        this.jobPositionNumber=str.substring(str.lastIndexOf("/")+1,str.lastIndexOf("?"));
+        this.jobPositionNumber=str.substring(str.lastIndexOf("/")+1,str.indexOf("?"));
         String[] list = str.split("\\?");
         this.traceUrl=list[1];
+        this.kw=list[2];
         return this;
     }
 
@@ -41,5 +44,13 @@ public class DetailRequest implements Request{
 
     public void setTraceUrl(String traceUrl) {
         this.traceUrl = traceUrl;
+    }
+
+    public String getKw() {
+        return kw;
+    }
+
+    public void setKw(String kw) {
+        this.kw = kw;
     }
 }
