@@ -1,3 +1,3 @@
 
-fsquid:S3027"JPut single-quotes around '/' to use the faster "lastIndexOf(char)" method.(©˜¢Ö8Ã¯è°Ø-
-fsquid:S3027"JPut single-quotes around '?' to use the faster "lastIndexOf(char)" method.(©˜¢Ö8¿ï ±Ø-
+isquid:S3027"FPut single-quotes around '?' to use the faster "indexOf(char)" method.(ä¯Ð©þÿÿÿÿ8¿ï ±Ø-
+msquid:S3027"JPut single-quotes around '/' to use the faster "lastIndexOf(char)" method.(ä¯Ð©þÿÿÿÿ8Ã¯è°Ø-

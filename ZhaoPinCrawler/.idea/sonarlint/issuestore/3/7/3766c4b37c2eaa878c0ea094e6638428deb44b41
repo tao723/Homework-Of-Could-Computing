@@ -1,6 +1,3 @@
 
-Lsquid:S1068")Remove this unused "LOCAL" private field.(ˆÄ»¯øÿÿÿÿ8èş§Ù-
-psquid:S00116"QRename this field "ALIYUN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ûè…Â8Ã ³Ø-
-Dsquid:S1170"!Make this final field static too.(ˆÄ»¯øÿÿÿÿ8Ã ³Ø-
-tsquid:S00116"PRename this field "LOCAL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ˆÄ»¯øÿÿÿÿ8Ã ³Ø-
-?squid:S1170"!Make this final field static too.(Ûè…Â8Ã ³Ø-
+Fsquid:S1148""#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¸ˆâ¥Ú-
+Gsquid:S1068")Remove this unused "LOCAL" private field.(¼åÃ¸8¡çª¦Ú-
