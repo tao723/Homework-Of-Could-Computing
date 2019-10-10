@@ -35,6 +35,7 @@ public class Main {
 
             String str="";
             String FilePath="C:\\Users\\20271\\Desktop\\SparkHomework\\TestFile\\MongodbData";
+
             int i=0;
             //File f=new File("C:\\Users\\20271\\Desktop\\SparkHomework\\TestFile\\MongodbData3.txt");
             //FileWriter fw=new FileWriter(f);
