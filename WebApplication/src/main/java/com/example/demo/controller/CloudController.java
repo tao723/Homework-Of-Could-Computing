@@ -32,4 +32,9 @@ public class CloudController {
     public ResponseVO getStartIndex(){
         return cloudService.getStartIndex();
     }
+
+    @GetMapping("stream/getLastIndex")
+    public ResponseVO getLastIndex(){
+        return cloudService.getLastIndex();
+    }
 }

@@ -1,5 +1,7 @@
 var streamChart = echarts.init($('#stream-chart')[0]);
 
+var currentIndex = -1;//记录插入表的index
+var lastIndex = -1;//记录数据库中最大的index
 var today = new Date();
 var charts;var i = 0;
 var option = {
@@ -24,7 +26,7 @@ var option = {
     xAxis : [
         {
             type : 'category',
-            data : ['A','B','C','D','E','F','G','H','I','J','K','L']
+            data : ['未知','未知','未知','未知','未知','未知','未知','未知','未知']
         }
     ],
     yAxis : [
@@ -36,7 +38,7 @@ var option = {
         {
             name:'数量',
             type:'bar',
-            data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+            data:[0, 0, 0, 0, 0, 0, 0, 0, 0],
             markPoint : {
                 data : [
                     {type : 'max', name: '最大值'},
@@ -59,23 +61,66 @@ var option = {
     color: ['#6640ff']
 };
 
-getRequestF(
-    'stream/get',
-    function (res) {
-        console.log(res);
-        charts = res.content;
-    },
-     function (error) {
-        alert(error);
+streamChart.setOption(option);
+
+var indexInterval = setInterval(function(){
+    getRequestF(
+        'stream/getStartIndex',
+        function (res) {
+            currentIndex = res.content;
+        },
+         function (error) {
+            alert(error);
+        }
+    );
+    if(currentIndex!=-1){
+        clearInterval(indexInterval);
+        var requestInterval = setInterval(function(){
+            getRequestF(
+                'stream/getLastIndex',
+                function (res) {
+                    lastIndex = res.content;
+                },
+                 function (error) {
+                    alert(error);
+                }
+            );
+            getRequestF(
+                'stream/get/'+currentIndex,
+                function (res) {
+                    console.log(res);
+                    option.series[0].data = res.content.yData;
+                    option.xAxis[0].data = res.content.xData;
+                    streamChart.setOption(option);
+                },
+                 function (error) {
+                    alert(error);
+                }
+            );
+            if(currentIndex<lastIndex)currentIndex++;
+        },500);
     }
-);
+},3000);
 
 
-setInterval(function(){
-    if(i<charts.length){
-        option.series[0].data = charts[i].yData;
-        option.xAxis[0].data = charts[i].xData;
-        streamChart.setOption(option);
-        i++;
-    }
-},500);
+//一次性获取数据库中的所有数据
+//getRequestF(
+//    'stream/get',
+//    function (res) {
+//        console.log(res);
+//        charts = res.content;
+//    },
+//     function (error) {
+//        alert(error);
+//    }
+//);
+//
+//
+//setInterval(function(){
+//    if(i<charts.length){
+//        option.series[0].data = charts[i].yData;
+//        option.xAxis[0].data = charts[i].xData;
+//        streamChart.setOption(option);
+//        i++;
+//    }
+//},500);
