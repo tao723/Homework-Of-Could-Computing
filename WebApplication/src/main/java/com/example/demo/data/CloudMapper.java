@@ -16,4 +16,6 @@ public interface CloudMapper {
 
     Integer getMaxInsertIndex();
 
+    Integer getMinInsertIndex();
+
 }

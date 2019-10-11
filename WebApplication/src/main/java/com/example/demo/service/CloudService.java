@@ -25,7 +25,8 @@ public class CloudService {
     public ResponseVO getStream(){
         ArrayList<StreamChartVO> charts = new ArrayList<>();
         int maxIndex = cloudMapper.getMaxInsertIndex();
-        for(int idx=0;idx<=maxIndex;idx++){
+        int minIndex = cloudMapper.getMinInsertIndex();
+        for(int idx=minIndex;idx<=maxIndex;idx++){
             ArrayList<String> xData = new ArrayList<>();
             ArrayList<Integer> yData = new ArrayList<>();
             for(StreamItem item:cloudMapper.getStreamItemsByNum(idx)){

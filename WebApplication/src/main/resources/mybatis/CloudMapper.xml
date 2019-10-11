@@ -13,4 +13,8 @@
     <select id="getMaxInsertIndex" resultType="java.lang.Integer">
         select MAX(insertIndex) from searchkeyword
     </select>
+
+    <select id="getMinInsertIndex" resultType="java.lang.Integer">
+        select MIN(insertIndex) from searchkeyword
+    </select>
 </mapper>
