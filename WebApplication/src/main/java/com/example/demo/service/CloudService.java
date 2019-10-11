@@ -57,4 +57,12 @@ public class CloudService {
         }
         return ResponseVO.buildSuccess(charts);
     }
+
+    public ResponseVO getStreamByIndex(int index){
+        return null;
+    }
+
+    public ResponseVO getStartIndex(){
+        return null;
+    }
 }

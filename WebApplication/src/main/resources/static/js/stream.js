@@ -78,4 +78,4 @@ setInterval(function(){
         streamChart.setOption(option);
         i++;
     }
-},1500);
+},500);
