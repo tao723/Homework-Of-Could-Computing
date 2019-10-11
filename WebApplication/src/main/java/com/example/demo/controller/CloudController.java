@@ -19,7 +19,6 @@ public class CloudController {
 
     @GetMapping("stream/get")
     public ResponseVO getStream(){
-        System.out.println("get request");
         return cloudService.getStream();
     }
 }

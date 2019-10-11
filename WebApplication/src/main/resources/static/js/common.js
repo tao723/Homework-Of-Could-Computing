@@ -7,6 +7,15 @@ function getRequest(url, onSuccess, onError) {
         error: onError
     });
 }
+function getRequestF(url, onSuccess, onError) {
+    $.ajax({
+        type: 'GET',
+        url: url,
+        async: false,
+        success: onSuccess,
+        error: onError
+    });
+}
 function postRequest(url, data, onSuccess, onError) {
     $.ajax({
         type: 'POST',
@@ -18,4 +27,7 @@ function postRequest(url, data, onSuccess, onError) {
         success: onSuccess,
         error: onError
     });
+}
+function sleep(d){
+  for(var t = Date.now();Date.now() - t <= d;);
 }

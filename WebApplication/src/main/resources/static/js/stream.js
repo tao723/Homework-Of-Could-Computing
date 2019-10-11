@@ -1,6 +1,7 @@
 var streamChart = echarts.init($('#stream-chart')[0]);
 
 var today = new Date();
+var charts;var i = 0;
 var option = {
     title : {
         text: '职业招聘需求',
@@ -23,7 +24,7 @@ var option = {
     xAxis : [
         {
             type : 'category',
-            data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+            data : ['A','B','C','D','E','F','G','H','I','J','K','L']
         }
     ],
     yAxis : [
@@ -57,34 +58,24 @@ var option = {
     },
     color: ['#6640ff']
 };
-var socket;
-if(typeof(WebSocket) == "undefined") {
-    console.log("您的浏览器不支持WebSocket");
-}
-else{
-    console.log("支持支持大力支持");
-    //实现化WebSocket对象，指定要连接的服务器地址与端口  建立连接
-    socket = new WebSocket("ws://localhost:8080/stream/get");
-    //打开事件
-    socket.onopen = function() {
-        console.log("Socket 已打开");
-        //socket.send("这是来自客户端的消息" + location.href + new Date());
-    };
-    //获得消息事件
-    socket.onmessage = function(msg) {
-        console.log(msg);
-        //发现消息进入    开始处理前端触发逻辑
-    };
-    //关闭事件
-    socket.onclose = function() {
-        console.log("Socket已关闭");
-    };
-    //发生了错误事件
-    socket.onerror = function() {
-        alert("Socket发生了错误");
-        //此时可以尝试刷新页面
-    }
-}
-streamChart.setOption(option);
-// 使用刚指定的配置项和数据显示图表。
 
+getRequestF(
+    'stream/get',
+    function (res) {
+        console.log(res);
+        charts = res.content;
+    },
+     function (error) {
+        alert(error);
+    }
+);
+
+
+setInterval(function(){
+    if(i<charts.length){
+        option.series[0].data = charts[i].yData;
+        option.xAxis[0].data = charts[i].xData;
+        streamChart.setOption(option);
+        i++;
+    }
+},2000);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.data.CloudMapper">
+    <select id="testGet" resultType="java.lang.Integer">
+        select * from base
+    </select>
+
+    <select id="getStreamItemsByNum" resultType="com.example.demo.po.StreamItem">
+        select keyword as keyword,search_count as count,insertIndex as insertIndex from searchkeyword
+        where insertIndex = ${num}
+    </select>
+    
+    <select id="getMaxInsertIndex" resultType="java.lang.Integer">
+        select MAX(insertIndex) from searchkeyword
+    </select>
+</mapper>
