@@ -37,4 +37,19 @@ public class CloudController {
     public ResponseVO getLastIndex(){
         return cloudService.getLastIndex();
     }
+
+    @GetMapping("stream/getCity/{idx}")
+    public ResponseVO getCityByIndex(@PathVariable int idx){
+        return cloudService.getCityByIndex(idx);
+    }
+
+    @GetMapping("stream/getCityStartIndex")
+    public ResponseVO getCityStartIndex(){
+        return cloudService.getCityStartIndex();
+    }
+
+    @GetMapping("stream/getCityLastIndex")
+    public ResponseVO getCityLastIndex(){
+        return cloudService.getCityLastIndex();
+    }
 }

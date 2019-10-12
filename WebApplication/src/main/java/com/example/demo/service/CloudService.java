@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.data.CloudMapper;
+import com.example.demo.po.CityItem;
 import com.example.demo.po.StreamItem;
+import com.example.demo.vo.CityChartVO;
 import com.example.demo.vo.ResponseVO;
 import com.example.demo.vo.StreamChartVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,10 @@ public class CloudService {
         return ResponseVO.buildSuccess(getStreamChartByIndex(index));
     }
 
+    public ResponseVO getCityByIndex(int index){
+        return ResponseVO.buildSuccess(getCityChartByIndex(index));
+    }
+
     /**
      * 获取数据库中最初的Chart的index，如果没有则返回-1
      * @return
@@ -58,6 +64,18 @@ public class CloudService {
 
     public ResponseVO getLastIndex(){
         Integer lastIndex = cloudMapper.getMaxInsertIndex();
+        if(lastIndex==null)return ResponseVO.buildSuccess(-1);
+        return ResponseVO.buildSuccess(lastIndex);
+    }
+
+    public ResponseVO getCityStartIndex(){
+        Integer startIndex = cloudMapper.getCityMinInsertIndex();
+        if(startIndex==null)return ResponseVO.buildSuccess(-1);
+        return ResponseVO.buildSuccess(startIndex);
+    }
+
+    public ResponseVO getCityLastIndex(){
+        Integer lastIndex = cloudMapper.getCityMaxInsertIndex();
         if(lastIndex==null)return ResponseVO.buildSuccess(-1);
         return ResponseVO.buildSuccess(lastIndex);
     }
@@ -93,6 +111,36 @@ public class CloudService {
         }
         else {
             chart = new StreamChartVO(idx,xData,yData);
+        }
+        return chart;
+    }
+
+    private CityChartVO getCityChartByIndex(int idx){
+        ArrayList<String> xData = new ArrayList<>();
+        ArrayList<Integer> yData = new ArrayList<>();
+        for(CityItem item:cloudMapper.getCityItemsByNum(idx)){
+            if(item == null)continue;
+            xData.add(item.getCity());
+            yData.add(item.getCount());
+        }
+        for(int i=0;i<yData.size()-1;i++){
+            for (int j=0; j<yData.size()-1-i; j++) {
+                if (yData.get(j) < yData.get(j+1)) {
+                    Integer ytemp = yData.get(j);
+                    String xtemp = xData.get(j);
+                    yData.set(j,yData.get(j+1));
+                    xData.set(j,xData.get(j+1));
+                    yData.set(j+1,ytemp);
+                    xData.set(j+1,xtemp);
+                }
+            }
+        }
+        CityChartVO chart;
+        if(yData.size()>PRE_MAX){
+            chart = new CityChartVO(idx,xData.subList(0,PRE_MAX),yData.subList(0,PRE_MAX));
+        }
+        else {
+            chart = new CityChartVO(idx,xData,yData);
         }
         return chart;
     }

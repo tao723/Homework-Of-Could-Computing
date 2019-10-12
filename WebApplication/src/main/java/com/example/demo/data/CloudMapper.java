@@ -1,6 +1,7 @@
 package com.example.demo.data;
 
 
+import com.example.demo.po.CityItem;
 import com.example.demo.po.StreamItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,5 +18,11 @@ public interface CloudMapper {
     Integer getMaxInsertIndex();
 
     Integer getMinInsertIndex();
+
+    List<CityItem> getCityItemsByNum(@Param("num")int num);
+
+    Integer getCityMaxInsertIndex();
+
+    Integer getCityMinInsertIndex();
 
 }
