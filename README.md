@@ -1,3 +1,4 @@
 # Homework-Of-Could-Computing
 
-10/7前完成Spark Streaming 以及 Spark GraphX
+10/13已完成spark streaming项目
+
