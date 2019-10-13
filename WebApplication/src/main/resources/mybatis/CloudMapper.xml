@@ -17,4 +17,17 @@
     <select id="getMinInsertIndex" resultType="java.lang.Integer">
         select MIN(insertIndex) from searchkeyword
     </select>
+    
+    <select id="getCityItemsByNum" resultType="com.example.demo.po.CityItem">
+        select city as city,search_count as count,insertIndex as insertIndex from City
+        where insertIndex = ${num}
+    </select>
+
+    <select id="getCityMaxInsertIndex" resultType="java.lang.Integer">
+        select MAX(insertIndex) from City
+    </select>
+
+    <select id="getCityMinInsertIndex" resultType="java.lang.Integer">
+        select MIN(insertIndex) from City
+    </select>
 </mapper>

@@ -16,7 +16,13 @@ public class ViewController {
     }
 
     @RequestMapping(value = "stream")
-    public String getHello(){
+    public String getStream(){
         return "stream";
+    }
+
+
+    @RequestMapping(value = "graphx")
+    public String getGraphX(){
+        return "graphx";
     }
 }

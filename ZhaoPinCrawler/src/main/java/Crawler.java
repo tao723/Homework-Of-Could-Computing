@@ -1,10 +1,13 @@
 import request.ListRequest;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.pipeline.ConsolePipeline;
-import us.codecraft.webmagic.scheduler.BloomFilterDuplicateRemover;
 import us.codecraft.webmagic.scheduler.QueueScheduler;
 import us.codecraft.webmagic.scheduler.component.HashSetDuplicateRemover;
 
+/**
+ * 爬虫入口
+ * @author debonet
+ */
 public class Crawler {
 
     private static final String[] jobs={"%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86","%E4%BA%A7%E5%93%81%E4%B8%93%E5%91%98",
@@ -59,6 +62,6 @@ public class Crawler {
         spider.addPipeline(new ConsolePipeline());
         spider.addPipeline(new MongoPipeline());
         spider.setScheduler(new QueueScheduler().setDuplicateRemover(new HashSetDuplicateRemover()));
-        spider.thread(8).run();
+        spider.thread(50).run();
     }
 }

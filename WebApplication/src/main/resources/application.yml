@@ -1,8 +1,14 @@
 spring:
   datasource:
+<<<<<<< HEAD
      url: jdbc:mysql://localhost:3306/spark?serverTimezone=CTT&characterEncoding=UTF-8
      username: root
      password: 19971204
+=======
+     url: jdbc:mysql://192.168.1.7:3306/spark?serverTimezone=CTT&characterEncoding=UTF-8
+     username: chen
+     password: 123
+>>>>>>> f1ae678e2491b1a38270a4b42be0c49a8a48d949
      driver-class-name: com.mysql.cj.jdbc.Driver
      max-active: 200
      max-idle: 20

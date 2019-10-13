@@ -1,8 +1,8 @@
 package com.example.demo.po;
 
-public class StreamItem {
+public class CityItem {
     private int insertIndex;
-    private String keyword;
+    private String city;
     private int count;
 
     public int getInsertIndex() {
@@ -13,12 +13,12 @@ public class StreamItem {
         this.insertIndex = insertIndex;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getCity() {
+        return city;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public int getCount() {
@@ -28,6 +28,4 @@ public class StreamItem {
     public void setCount(int count) {
         this.count = count;
     }
-
-
 }
