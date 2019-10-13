@@ -8,7 +8,10 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 import java.util.List;
 
-
+/**
+ * 爬虫主要逻辑判断
+ * @author debonet
+ */
 public class RecruitmentProcessor implements PageProcessor {
 
     private String souBackup = "https://xiaoyuan.zhaopin.com/api/sou?sourceClient=sou&keyWord=%E4%BA%A7%E5%93%81%E7%BB%8F%E7%90%86&jobSource=&pageNumber=1&jobNatures=2&jobTypeId=&cityIdList=&cityId=&industryId=&companyTypeId=&dateSearchTypeId=&orderBy=&clientIp=10.172.27.221&_v=0.26932904&x-zp-page-request-id=713f04ef3484427fa820b7ddeb5bab0f-1569682437617-181697&x-zp-client-id=9166d50b-75bc-4618-8c76-2e74bd39b5a1";

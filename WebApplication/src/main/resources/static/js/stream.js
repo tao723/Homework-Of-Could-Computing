@@ -57,10 +57,11 @@ var option = {
         }
     ],
     animationDelay: function(k){
-        if (k < (1 / 2.75)) { return 7.5625 * k * k; }
-        else if (k < (2 / 2.75)) { return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75; }
-        else if (k < (2.5 / 2.75)) { return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375; }
-        else { return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;}
+        return k * (2 - k);
+//        if (k < (1 / 2.75)) { return 7.5625 * k * k; }
+//        else if (k < (2 / 2.75)) { return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75; }
+//        else if (k < (2.5 / 2.75)) { return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375; }
+//        else { return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;}
     },
     color: ['#6640ff']
 };
@@ -113,12 +114,13 @@ var cityOption = {
         }
     ],
     animationDelay: function(k){
-        if (k < (1 / 2.75)) { return 7.5625 * k * k; }
-        else if (k < (2 / 2.75)) { return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75; }
-        else if (k < (2.5 / 2.75)) { return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375; }
-        else { return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;}
+        return k * (2 - k);
+//        if (k < (1 / 2.75)) { return 7.5625 * k * k; }
+//        else if (k < (2 / 2.75)) { return 7.5625 * (k -= (1.5 / 2.75)) * k + 0.75; }
+//        else if (k < (2.5 / 2.75)) { return 7.5625 * (k -= (2.25 / 2.75)) * k + 0.9375; }
+//        else { return 7.5625 * (k -= (2.625 / 2.75)) * k + 0.984375;}
     },
-    color: ['#6640ff']
+    color: ['#ff4040']
 };
 
 streamChart.setOption(option);
@@ -143,6 +145,7 @@ var indexInterval = setInterval(function(){
             alert(error);
         }
     );
+    console.log(currentCityIndex+"---"+currentIndex);
     if(currentIndex!=-1 && currentCityIndex!=-1){
         clearInterval(indexInterval);
         streamChart.hideLoading();
@@ -192,7 +195,7 @@ var indexInterval = setInterval(function(){
             );
             if(currentIndex<lastIndex)currentIndex++;
             if(currentCityIndex<lastCityIndex)currentCityIndex++;
-        },999);
+        },1000);
     }
 },3000);
 

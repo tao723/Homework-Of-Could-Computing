@@ -22,7 +22,7 @@ public class CloudService {
     CloudMapper cloudMapper;
 
     //单次展示最大的条目数
-    private static final int PRE_MAX = 9;
+    private static final int PRE_MAX = 20;
 
     /**
      * 获取数据库中所有的StreamChart一次性返回

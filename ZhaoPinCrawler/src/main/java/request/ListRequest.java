@@ -2,6 +2,7 @@ package request;
 
 /**
  * 获取列表的请求封装
+ * @author debonet
  */
 public class ListRequest implements Request{
 

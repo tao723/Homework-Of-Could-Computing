@@ -1,5 +1,8 @@
 package request;
 
+/**
+ * 搜索请求封装
+ */
 public class SouRequest implements Request {
 
     public static final String FORMAT="https://xiaoyuan.zhaopin.com/api/sou?\\S+";

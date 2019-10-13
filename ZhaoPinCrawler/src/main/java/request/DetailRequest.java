@@ -1,5 +1,9 @@
 package request;
 
+/**
+ * 详细页面请求
+ * @author debonet
+ */
 public class DetailRequest implements Request{
 
     public static final String FORMAT="https://xiaoyuan.zhaopin.com/job/[A-Z0-9]*\\?\\S+";
