@@ -4,7 +4,7 @@ import java.net.ServerSocket
 
 import com.mongodb.{BasicDBObject, DBCursor, DBObject}
 import com.mongodb.casbah._
-import org.apache.spark.graphx.{Edge, EdgeTriplet, Graph, VertexId}
+import org.apache.spark.graphx.{Edge, EdgeTriplet, Graph, PartitionID, PartitionStrategy, VertexId}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext, rdd}
 import java.util.{Calendar, List}
@@ -33,7 +33,7 @@ object Main {
   sc.setLogLevel("ERROR")
   def main(args:Array[String]): Unit ={
     var dbObjectList:ArrayBuffer[DBObject]=ArrayBuffer()
-    mongoCollection.find().limit(300).forEach(x=>dbObjectList.append(x))
+    mongoCollection.find().limit(5).forEach(x=>dbObjectList.append(x))
 
     for(i<-dbObjectList){
       println(i)
@@ -56,6 +56,62 @@ object Main {
 
     val searchList:ArrayBuffer[(String,Int)]=ArrayBuffer.concat(cities.distinct,eduLevels.distinct,jobs.distinct)
     val vertexList:ArrayBuffer[(Long,(String,Int))]=searchList.map(a=>new Tuple2[Long,(String,Int)](iterator.next(),a))
+
+
+
+
+
+    val vertexRDD:RDD[(Long,(String,Int))]=sc.parallelize(vertexList)
+    println("-----------------------------------------------")
+    println("开始打印vertexRDD：")
+    vertexRDD.foreach(a=>println(a))
+
+    val edgeList:ArrayBuffer[Edge[Int]]=ArrayBuffer[Edge[Int]]()
+
+
+    for(i<-0 to (cities.size-1)) {
+      println("开始建立第 " + i + " 条边")
+
+
+      var cityNum = searchList.indexOf(cities(i)) + 1
+      var eduNum = searchList.indexOf(eduLevels(i)) + 1
+      var jobNum = searchList.indexOf(jobs(i)) + 1
+
+
+      println(cityNum + " " + eduNum + " " + jobNum)
+      edgeList.append(new Edge[Int](cityNum, eduNum, numOfPerson(i)))
+      edgeList.append(new Edge[Int](eduNum, jobNum, numOfPerson(i)))
+      edgeList.append(new Edge[Int](cityNum,jobNum,numOfPerson(i)))
+
+
+
+    }
+
+
+    val edgeRDD:RDD[Edge[Int]]=sc.parallelize(edgeList)
+
+
+    val graph:Graph[(String,Int),Int]=Graph(vertexRDD,edgeRDD)
+
+
+    println("------------------------------------------")
+    println("开始打印4：")
+
+    graph.vertices.foreach(a=>println(a._1+" "+a._2))
+    graph.edges.foreach(a=>println(a.srcId+" "+a.dstId+" "+a.attr))
+
+
+    //将平行边合并
+    val mergedGraph=graph.partitionBy(PartitionStrategy.CanonicalRandomVertexCut).groupEdges((ed1,ed2)=>{
+      ed1+ed2
+    })
+
+    println("开始打印合并后的边")
+    mergedGraph.edges.foreach(a=>println(a.srcId+" "+a.dstId+" "+a.attr))
+
+
+
+
 
 
     //设置gexf环境
@@ -81,86 +137,14 @@ object Main {
       gexfGraph.createNode(i.toString).setLabel(searchList(i-1)._1).getAttributeValues.addValue(nodeType,searchList(i-1)._2.toString)
     }
 
+    //创建边
 
-    val vertexRDD:RDD[(Long,(String,Int))]=sc.parallelize(vertexList)
-    println("-----------------------------------------------")
-    println("开始打印vertexRDD：")
-    vertexRDD.foreach(a=>println(a))
-
-    val edgeList:ArrayBuffer[Edge[Int]]=ArrayBuffer[Edge[Int]]()
-
-
-    for(i<-0 to (cities.size-1)) {
-      println("开始建立第 " + i + " 条边")
-
-
-      var cityNum = searchList.indexOf(cities(i)) + 1
-      var eduNum = searchList.indexOf(eduLevels(i)) + 1
-      var jobNum = searchList.indexOf(jobs(i)) + 1
-
-
-      println(cityNum + " " + eduNum + " " + jobNum)
-      edgeList.append(new Edge[Int](cityNum, eduNum, numOfPerson(i)))
-      edgeList.append(new Edge[Int](eduNum, jobNum, numOfPerson(i)))
-      edgeList.append(new Edge[Int](cityNum,jobNum,numOfPerson(i)))
-      //创建边
-
-      try{
-        gexfGraph.getNode(cityNum.toString).connectTo((i + 1).toString, gexfGraph.getNode(eduNum.toString)).setWeight(numOfPerson(i))
-      }catch {
-        case ex:IllegalArgumentException=>{
-          edgeList.map(a=>{
-            if((a.srcId==cityNum)&&(a.dstId==eduNum)){
-              a.attr+=numOfPerson(i)
-            }
-          })
-        }
-      }
-
-      try {
-
-        gexfGraph.getNode(eduNum.toString).connectTo((cities.size+i+1).toString, gexfGraph.getNode(jobNum.toString)).setWeight(numOfPerson(i))
-      }catch{
-        case ex:IllegalArgumentException=>{
-          //如果边已经存在，找出该边，加上人数
-          edgeList.map(a=>{
-            if((a.srcId==eduNum)&&(a.dstId==jobNum)){
-              a.attr+=numOfPerson(i)
-            }
-          })
-        }
-      }
-
-      try{
-        gexfGraph.getNode(cityNum.toString).connectTo((cities.size*2+i+1).toString,gexfGraph.getNode(jobNum.toString)).setWeight(numOfPerson(i))
-      }catch{
-        case ex:IllegalArgumentException=>{
-          edgeList.map(a=>{
-            if((a.srcId==cityNum)&&(a.dstId==jobNum)){
-              a.attr+=numOfPerson(i)
-            }
-          })
-        }
-      }
+    println("开始合并边")
+    val edges=mergedGraph.edges.collect()
+    for(i<-edges){
+      println("源节点："+i.srcId+",尾节点："+i.dstId)
+      gexfGraph.getNode(i.srcId.toString).connectTo(gexfGraph.getNode(i.dstId.toString)).setWeight(i.attr)
     }
-
-
-    val edgeRDD:RDD[Edge[Int]]=sc.parallelize(edgeList)
-
-
-    val graph:Graph[(String,Int),Int]=Graph(vertexRDD,edgeRDD)
-
-    println("------------------------------------------")
-    println("开始打印4：")
-
-    graph.vertices.foreach(a=>println(a._1+" "+a._2))
-    graph.edges.foreach(a=>println(a.srcId+" "+a.dstId+" "+a.attr))
-
-
-
-
-
-
 
 
     val f:File=new File("/Users/kevinchiang/Desktop/graph.gexf")
@@ -168,7 +152,6 @@ object Main {
     val out:Writer=new FileWriter(f,false)
     val graphWriter:StaxGraphWriter=new StaxGraphWriter()
     graphWriter.writeToStream(gexf,out,"UTF-8")
-    System.out.println(f.getAbsolutePath)
 
 
     val serverSocket:ServerSocket=new ServerSocket(9999)
@@ -188,7 +171,7 @@ object Main {
       val vertexId:Long=response.toLong
       var vertexType:Int= -1
 
-      val tmpArr=graph.vertices.collect()
+      val tmpArr=mergedGraph.vertices.collect()
       for(i<-tmpArr){
         if(i._1==vertexId){
           vertexType=i._2._2
@@ -200,7 +183,7 @@ object Main {
       }
 
       //把跟所选中顶点同类型的其他顶点去除
-      val sub=graph.subgraph(edgeTriplet=>{
+      val sub=mergedGraph.subgraph(edgeTriplet=>{
         true
       },(verId,VD)=>{
         if(VD._2==vertexType){ //所有职业顶点

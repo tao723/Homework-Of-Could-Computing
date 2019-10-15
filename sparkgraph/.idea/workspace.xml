@@ -44,7 +44,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Test">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Learn" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Learn" />
       <module name="sparkgraph" />
@@ -73,8 +73,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Test" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Test" />
         <item itemvalue="Application.Learn" />
       </list>
     </recent_temporary>
@@ -105,7 +105,7 @@
       <workItem from="1570925040278" duration="16968000" />
       <workItem from="1571013859487" duration="21817000" />
       <workItem from="1571101010800" duration="5306000" />
-      <workItem from="1571110233890" duration="9308000" />
+      <workItem from="1571110233890" duration="15451000" />
     </task>
     <servers />
   </component>
