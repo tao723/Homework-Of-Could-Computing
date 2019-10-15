@@ -18,6 +18,11 @@ public class CloudController {
     @Autowired
     CloudService cloudService;
 
+    @GetMapping("graphx/computeNode/{id}")
+    public ResponseVO computNode(@PathVariable int id){
+        return cloudService.computNode(id);
+    }
+
     @GetMapping("stream/get")
     public ResponseVO getStream(){
         return cloudService.getStream();

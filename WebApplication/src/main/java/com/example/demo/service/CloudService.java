@@ -4,11 +4,16 @@ import com.example.demo.data.CloudMapper;
 import com.example.demo.po.CityItem;
 import com.example.demo.po.StreamItem;
 import com.example.demo.vo.CityChartVO;
+import com.example.demo.vo.GraphResVO;
 import com.example.demo.vo.ResponseVO;
 import com.example.demo.vo.StreamChartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -21,8 +26,36 @@ public class CloudService {
     @Autowired
     CloudMapper cloudMapper;
 
+    private static final String IPADDRESS = "172.17.134.68";
+
     //单次展示最大的条目数
     private static final int PRE_MAX = 20;
+
+    public ResponseVO computNode(int id){
+        System.out.println("点击了node："+id);
+        String str = null;
+        try {
+            Socket socket = new Socket(IPADDRESS,9999);
+            DataOutputStream writer = new DataOutputStream(socket.getOutputStream());
+            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+            writer.writeUTF(String.valueOf(id));
+            str = inputStream.readUTF();
+            System.out.println(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        GraphResVO resVO = new GraphResVO();
+        GraphResVO testRes = new GraphResVO(417,433);
+        if(str!=null){
+            System.out.println(str);
+            String[] reslist = str.split(" ");
+            resVO.setId1(Integer.parseInt(reslist[0]));
+            resVO.setName1(reslist[1]);
+            resVO.setId2(Integer.parseInt(reslist[2]));
+            resVO.setName2(reslist[3]);
+        }
+        return ResponseVO.buildSuccess(resVO);
+    }
 
     /**
      * 获取数据库中所有的StreamChart一次性返回

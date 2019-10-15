@@ -1,8 +1,5 @@
 var myChart = echarts.init($('#graphx-chart')[0]);
 myChart.showLoading();
-var pt1 = -1;
-var pt2 = -1;
-var types = ['城市','学历','职业'];
 $.get('/gexf/graph.gexf', function (xml) {
     myChart.hideLoading();
     var today = new Date();
@@ -10,11 +7,10 @@ $.get('/gexf/graph.gexf', function (xml) {
     var categories = [{name:'城市'},{name:'学历'},{name:'职业'}];
     graph.nodes.forEach(function (node) {
         node.itemStyle = null;
-        node.symbolSize = 9;
+        node.symbolSize = 16;
         node.category = node.attributes.NodeType;
         // Use random x, y
-        node.x = null;
-        node.y = null;
+        node.x = node.y = null;
         node.draggable = false;
     });
     option = {
@@ -43,42 +39,30 @@ $.get('/gexf/graph.gexf', function (xml) {
                 roam: true,
                 label: {
                     normal: {
-                        position: 'top',
-                        fontSize: 75
+                        position: 'right',
+                        fontSize: 200
                     }
                 },
                 force: {
                     repulsion: 10000,
-//                    layoutAnimation: false,
-                    gravity: 0.01
+                    edgeLength: [400,2000]
                 }
             }
-        ],
-        backgroundColor: '#ffffff',
-        color: ['#c23531','#20b2aa','#ffcc00']
+        ]
     };
 
     myChart.setOption(option);
     myChart.on('click', function (param){
         console.log('param---->', param);  // 打印出param, 可以看到里边有很多参数可以使用
         //获取节点点击的数组序号
+        var arrayIndex = param.dataIndex;
+        console.log('arrayIndex---->', arrayIndex);
+        console.log('name---->', param.name);
         if (param.dataType == 'node') {
             console.log("点击了节点" + param.name);
-            getRequest("graphx/computeNode/"+param.data.id,
+            getRequest("graphx/computeNode/"+param.dataIndex,
                 function (res) {
-                    pt1 = res.content.id1;
-                    pt2 = res.content.id2;
-                    var alertMsg = "与"+types[param.data.category]+param.name+"联系最紧密的为:"+res.content.name1+","+res.content.name2;
-
-                    for (var i =0;i<option.series[0].data.length;i++){
-                        if(option.series[0].data[i].id==pt1||option.series[0].data[i].id==pt2||option.series[0].data[i].id==param.data.id){
-                            option.series[0].data[i].symbolSize = 30;
-                        }
-                        else option.series[0].data[i].symbolSize = 9;
-                    }
-                    myChart.setOption(option);
-                    sleep(2000);
-                    alert(alertMsg);
+                    console.log(res.content);
                 },
                  function (error) {
                     alert(error);

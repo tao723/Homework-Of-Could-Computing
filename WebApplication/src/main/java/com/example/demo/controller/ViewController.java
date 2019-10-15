@@ -25,4 +25,9 @@ public class ViewController {
     public String getGraphX(){
         return "graphx";
     }
+
+    @RequestMapping(value = "graphy")
+    public String getGraphY(){
+        return "graphy";
+    }
 }

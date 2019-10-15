@@ -1,7 +1,7 @@
 
-fsquid:S00107-"BConstructor has 10 parameters, which is greater than 7 authorized.(áÚæ­üÿÿÿÿ8áÓÔµØ-
-ysquid:S1845"[Rename field "js" to prevent any misunderstanding/clash with field "JS" defined on line 19.(ƒÙ¥¼8˜í‰¶Ø-
-}squid:S1845"_Rename field "city" to prevent any misunderstanding/clash with field "CITY" defined on line 11.(™‚ôã8áÓÔµØ-
-{squid:S1845"]Rename field "ind" to prevent any misunderstanding/clash with field "IND" defined on line 15.(íÄ™€8˜í‰¶Ø-
-~squid:S1845"[Rename field "jt" to prevent any misunderstanding/clash with field "JT" defined on line 13.(ıÿºÍşÿÿÿÿ8˜í‰¶Ø-
-{squid:S1845"]Rename field "cor" to prevent any misunderstanding/clash with field "COR" defined on line 17.(ˆøƒ8˜í‰¶Ø-
+{squid:S1845"]Rename field "cor" to prevent any misunderstanding/clash with field "COR" defined on line 20.(ˆøƒ8˜í‰¶Ø-
+ysquid:S1845"[Rename field "js" to prevent any misunderstanding/clash with field "JS" defined on line 22.(ƒÙ¥¼8˜í‰¶Ø-
+}squid:S1845"_Rename field "city" to prevent any misunderstanding/clash with field "CITY" defined on line 14.(™‚ôã8áÓÔµØ-
+{squid:S1845"]Rename field "ind" to prevent any misunderstanding/clash with field "IND" defined on line 18.(íÄ™€8˜í‰¶Ø-
+fsquid:S001070"BConstructor has 10 parameters, which is greater than 7 authorized.(áÚæ­üÿÿÿÿ8áÓÔµØ-
+~squid:S1845"[Rename field "jt" to prevent any misunderstanding/clash with field "JT" defined on line 16.(ıÿºÍşÿÿÿÿ8˜í‰¶Ø-

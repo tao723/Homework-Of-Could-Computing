@@ -1,3 +1,5 @@
 
-Fsquid:S1148""#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¸ˆâ¥Ú-
-Hsquid:S1068"*Remove this unused "ALIYUN" private field.(ûÿ­ô8åçÔƒÜ-
+esquid:S30272"HPut single-quotes around 'äºº' to use the faster "indexOf(char)" method.(¾•©8Ä´§Ü-
+Fsquid:S1148+"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¸ˆâ¥Ú-
+Gsquid:S1068")Remove this unused "LOCAL" private field.(¼åÃ¸8¥ÄÃ§Ü-
+usquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(´§•ˆıÿÿÿÿ8°‡¨§Ü-
