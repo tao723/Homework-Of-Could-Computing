@@ -27,7 +27,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -44,7 +44,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.Test">
     <configuration name="Learn" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Learn" />
       <module name="sparkgraph" />
@@ -73,8 +73,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Test" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Learn" />
       </list>
     </recent_temporary>
@@ -103,7 +103,9 @@
       <workItem from="1570805295478" duration="302000" />
       <workItem from="1570864196285" duration="19032000" />
       <workItem from="1570925040278" duration="16968000" />
-      <workItem from="1571013859487" duration="3812000" />
+      <workItem from="1571013859487" duration="21817000" />
+      <workItem from="1571101010800" duration="5306000" />
+      <workItem from="1571110233890" duration="9308000" />
     </task>
     <servers />
   </component>
