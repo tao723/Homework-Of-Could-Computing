@@ -33,11 +33,9 @@ object Main {
   sc.setLogLevel("ERROR")
   def main(args:Array[String]): Unit ={
     var dbObjectList:ArrayBuffer[DBObject]=ArrayBuffer()
-    mongoCollection.find().limit(5).forEach(x=>dbObjectList.append(x))
+    mongoCollection.find().forEach(x=>dbObjectList.append(x))
 
-    for(i<-dbObjectList){
-      println(i)
-    }
+
     val cities:ArrayBuffer[(String,Int)]=dbObjectList.map(dbobject=>new Tuple2[String,Int](dbobject.get("city").toString,0))
     val eduLevels:ArrayBuffer[(String,Int)]=dbObjectList.map(dbobject=>new Tuple2[String,Int](dbobject.get("eduLevel").toString,1))
     val jobs:ArrayBuffer[(String,Int)]=dbObjectList.map(dbobject=>new Tuple2[String,Int](dbobject.get("keyWord").toString,2))
@@ -58,59 +56,33 @@ object Main {
     val vertexList:ArrayBuffer[(Long,(String,Int))]=searchList.map(a=>new Tuple2[Long,(String,Int)](iterator.next(),a))
 
 
-
-
-
     val vertexRDD:RDD[(Long,(String,Int))]=sc.parallelize(vertexList)
-    println("-----------------------------------------------")
-    println("开始打印vertexRDD：")
-    vertexRDD.foreach(a=>println(a))
 
     val edgeList:ArrayBuffer[Edge[Int]]=ArrayBuffer[Edge[Int]]()
 
-
     for(i<-0 to (cities.size-1)) {
-      println("开始建立第 " + i + " 条边")
-
 
       var cityNum = searchList.indexOf(cities(i)) + 1
       var eduNum = searchList.indexOf(eduLevels(i)) + 1
       var jobNum = searchList.indexOf(jobs(i)) + 1
 
-
-      println(cityNum + " " + eduNum + " " + jobNum)
       edgeList.append(new Edge[Int](cityNum, eduNum, numOfPerson(i)))
       edgeList.append(new Edge[Int](eduNum, jobNum, numOfPerson(i)))
       edgeList.append(new Edge[Int](cityNum,jobNum,numOfPerson(i)))
-
-
-
     }
-
-
     val edgeRDD:RDD[Edge[Int]]=sc.parallelize(edgeList)
 
 
     val graph:Graph[(String,Int),Int]=Graph(vertexRDD,edgeRDD)
 
 
-    println("------------------------------------------")
-    println("开始打印4：")
 
-    graph.vertices.foreach(a=>println(a._1+" "+a._2))
-    graph.edges.foreach(a=>println(a.srcId+" "+a.dstId+" "+a.attr))
 
 
     //将平行边合并
     val mergedGraph=graph.partitionBy(PartitionStrategy.CanonicalRandomVertexCut).groupEdges((ed1,ed2)=>{
       ed1+ed2
     })
-
-    println("开始打印合并后的边")
-    mergedGraph.edges.foreach(a=>println(a.srcId+" "+a.dstId+" "+a.attr))
-
-
-
 
 
 
@@ -195,6 +167,7 @@ object Main {
         }else{
           true
         }
+
       })
 
 
